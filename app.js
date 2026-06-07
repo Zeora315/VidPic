@@ -425,31 +425,7 @@ function resetAll() {
         showToast('正在提取中，请等待...');
         return;
     }
-
-    frames = [];
-    selectedFrames.clear();
-    videoFile = null;
-    videoElement.src = '';
-
-    document.getElementById('videoInput').value = '';
-    document.getElementById('extractBtn').disabled = true;
-    document.getElementById('progressSection').classList.remove('active');
-    document.getElementById('previewSection').classList.remove('active');
-    document.getElementById('printSection').classList.remove('active');
-    document.getElementById('controlPanel').style.display = 'block';
-
-    uploadArea.innerHTML = `
-        <div class="upload-icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-        </div>
-        <div class="upload-text">点击或拖拽上传视频</div>
-        <div class="upload-hint">支持 MP4, WebM, MOV 等格式</div>
-    `;
-
-    document.getElementById('progressBar').style.width = '0%';
-    document.getElementById('progressBar').textContent = '0%';
-
-    showToast('已重置，请重新上传视频');
+    location.reload();
 }
 
 function showToast(message) {
