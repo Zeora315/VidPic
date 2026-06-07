@@ -231,22 +231,14 @@ function generatePrintPages() {
         return;
     }
 
-    const direction = document.getElementById('bindDirection').value;
-    document.getElementById('bindSide').textContent = direction === 'right' ? '右侧' : '左侧';
-    document.getElementById('flipDirection').textContent = direction === 'right' ? '左往右' : '右往左';
-
     const container = document.getElementById('printPages');
     container.innerHTML = '';
 
     const framesPerPage = 8;
     const totalPages = Math.ceil(frames.length / framesPerPage);
 
-    // 装订方向影响：右侧装订时，每页的列序需要左右镜像，
-    // 这样从右往左翻页时才能按时间顺序看到动画。
-    // 实现方式：每页内对行做反向（每行 2 列：列 0↔列 1 互换）。
-    // 网格行序保持不变（从上到下仍是时间正序），
-    // 这样翻页时帧的实际编号顺序与时间方向一致。
-    const colSwap = direction === 'right';
+    // 每页内按行优先顺序填充（行 0 左→行 0 右→行 1 左→...）
+    const colSwap = false;
 
     for (let page = 0; page < totalPages; page++) {
         const pageDiv = document.createElement('div');
@@ -259,8 +251,7 @@ function generatePrintPages() {
         const endIdx = Math.min(startIdx + framesPerPage, frames.length);
 
         // 2x4 网格：行索引 0..3，每行 2 列。
-        // 填充顺序：行 0 左→行 0 右→行 1 左→...，但右侧装订时
-        // 物理上"先被翻到的一面"是右侧，所以每行内需要左右对调。
+        // 填充顺序：行 0 左→行 0 右→行 1 左→...
         for (let slot = 0; slot < framesPerPage; slot++) {
             const i = startIdx + slot;
             if (i >= endIdx) {
@@ -478,3 +469,12 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
+function showTipModal() {
+    document.getElementById('tipModal').classList.add('active');
+}
+
+function closeTipModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById('tipModal').classList.remove('active');
+}

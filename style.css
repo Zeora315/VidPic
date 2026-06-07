@@ -107,29 +107,6 @@ h3 {
 
 h3 svg { color: var(--c-primary); flex-shrink: 0; }
 
-/* ===== Hint boxes ===== */
-.flip-hint {
-    background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
-    border-left: 4px solid #f59e0b;
-    padding: 16px 18px;
-    border-radius: 0 var(--radius-md) var(--radius-md) 0;
-    margin-bottom: 20px;
-    font-size: 0.95em;
-    color: #9a3412;
-    border: 1px solid #fed7aa;
-    border-left-width: 4px;
-    line-height: 1.7;
-}
-
-.flip-hint strong {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 6px;
-    font-size: 1.05em;
-    color: #7c2d12;
-}
-
 /* ===== Upload area ===== */
 .upload-area {
     border: 2px dashed var(--c-border);
@@ -622,6 +599,116 @@ input[type="file"] { display: none; }
 .hidden-video { display: none; }
 .canvas-hidden { display: none; }
 
+/* ===== Footer ===== */
+.site-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px 16px;
+    font-size: 0.88em;
+    color: var(--c-text-muted);
+}
+
+.site-footer a {
+    color: var(--c-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s var(--ease);
+}
+
+.site-footer a:hover { color: var(--c-primary-hover); }
+
+.footer-github {
+    display: inline-flex;
+    align-items: center;
+    color: var(--c-text-soft);
+    transition: color 0.2s var(--ease);
+}
+
+.footer-github:hover { color: var(--c-primary); }
+
+.footer-tip-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--c-text-muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    transition: all 0.2s var(--ease);
+}
+
+.footer-tip-btn:hover {
+    color: var(--c-primary);
+    background: var(--c-primary-soft);
+}
+
+/* ===== Modal ===== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal-overlay.active {
+    display: flex;
+    animation: fadeIn 0.25s var(--ease);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: var(--c-surface);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px 20px;
+    max-width: 400px;
+    width: calc(100% - 32px);
+    box-shadow: var(--shadow-xl);
+    animation: slideUp 0.3s var(--ease);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--c-text);
+    margin-bottom: 16px;
+}
+
+.modal-header svg { color: var(--c-primary); }
+
+.modal-body {
+    color: var(--c-text-soft);
+    font-size: 0.95em;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.modal-body p { margin: 6px 0; }
+
+.modal-close-btn {
+    width: 100%;
+    justify-content: center;
+}
+
 /* ===== Toast ===== */
 .toast {
     position: fixed;
@@ -687,7 +774,6 @@ input[type="file"] { display: none; }
         height: 297mm;
     }
     .print-actions { display: none; }
-    .flip-hint { display: none; }
     .print-page-number { color: #333; }
 }
 
@@ -758,15 +844,6 @@ input[type="file"] { display: none; }
     .frame-number { font-size: 0.68em; padding: 1px 5px; top: 3px; left: 3px; }
     .frame-item.selected::after { font-size: 16px; right: 4px; bottom: 4px; }
 
-    .flip-hint {
-        padding: 12px 14px;
-        font-size: 0.85em;
-        line-height: 1.6;
-        margin-bottom: 14px;
-    }
-    .flip-hint strong { font-size: 0.95em; gap: 4px; }
-    .flip-hint strong svg { width: 16px; height: 16px; }
-
     .a4-sheet {
         width: calc(100vw - 28px);
         height: auto;
@@ -806,6 +883,9 @@ input[type="file"] { display: none; }
         font-size: 0.88em;
         bottom: 72px;
     }
+
+    .site-footer { flex-wrap: wrap; gap: 8px; padding: 20px 12px; font-size: 0.82em; }
+    .modal-content { padding: 22px 18px 16px; }
 
     .btn { padding: 10px 16px; font-size: 0.9em; }
 }

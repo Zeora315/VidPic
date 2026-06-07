@@ -47,13 +47,6 @@
                         <option value="1.0">原始尺寸</option>
                     </select>
                 </div>
-                <div class="setting-group">
-                    <label>装订方向</label>
-                    <select id="bindDirection">
-                        <option value="right" selected>右侧装订（从左往右翻）</option>
-                        <option value="left">左侧装订（从右往左翻）</option>
-                    </select>
-                </div>
             </div>
 
             <div class="actions">
@@ -121,14 +114,6 @@
 
         <!-- 打印排版 -->
         <div class="print-section" id="printSection">
-            <div class="flip-hint">
-                <strong>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                    打印装订说明
-                </strong>
-                每页A4纸包含8帧（2×4排列）。按帧编号顺序堆叠，<span id="bindSide">右侧</span>装订。
-                <br>建议用订书机或打孔器装订，翻页时从<span id="flipDirection">左往右</span>快速翻动即可看到动画效果。
-            </div>
             <div id="printPages"></div>
             <div class="print-actions">
                 <button class="btn btn-success" onclick="window.print()">
@@ -152,6 +137,30 @@
     </div>
 
     <div class="toast" id="toast"></div>
+
+    <footer class="site-footer">
+        <span>© 2026 <a href="https://zeora.top" target="_blank" rel="noopener">Zeora</a></span>
+        <a class="footer-github" href="https://github.com/Zeora315/VidPic" target="_blank" rel="noopener" title="GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <button class="footer-tip-btn" onclick="showTipModal()" title="温馨提示">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </button>
+    </footer>
+
+    <div class="modal-overlay" id="tipModal" onclick="closeTipModal(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>温馨提示</span>
+            </div>
+            <div class="modal-body">
+                <p>为了避免性能问题，建议经常刷新网页优化性能。</p>
+                <p>同时请确保你的浏览器和设备性能良好。</p>
+            </div>
+            <button class="btn btn-primary modal-close-btn" onclick="closeTipModal()">我知道了</button>
+        </div>
+    </div>
 
     <video class="hidden-video" id="videoElement" crossorigin="anonymous"></video>
     <canvas class="canvas-hidden" id="canvas"></canvas>
