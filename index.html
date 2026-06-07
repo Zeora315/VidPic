@@ -29,7 +29,7 @@
 
             <div class="settings">
                 <div class="setting-group">
-                    <label>每秒多少帧 <span class="quality-badge quality-high" id="qualityBadge">高质量</span></label>
+                    <label>每秒帧数 <span class="quality-badge quality-high" id="qualityBadge">高质量</span></label>
                     <input type="range" id="fpsInput" min="1" max="30" value="8" oninput="updateFPS(this.value)">
                     <div class="range-value" id="fpsValue">8 fps</div>
                     <small>建议8-12帧</small>
@@ -37,10 +37,10 @@
                 <div class="setting-group">
                     <label>最多提取秒数</label>
                     <input type="number" id="maxDuration" value="10" min="1" max="60">
-                    <small>限制提取时长，默认10秒</small>
+                    <small>限制提取时长，默认为10秒</small>
                 </div>
                 <div class="setting-group">
-                    <label>帧尺寸</label>
+                    <label>尺寸</label>
                     <select id="frameSize">
                         <option value="0.5">小 (50%)</option>
                         <option value="0.75" selected>中 (75%)</option>
@@ -65,7 +65,7 @@
         <div class="progress-section" id="progressSection">
             <h3>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                正在提取视频帧...
+                正在提取...
             </h3>
             <div class="progress-bar-container">
                 <div class="progress-bar" id="progressBar">0%</div>
