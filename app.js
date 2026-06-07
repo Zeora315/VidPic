@@ -456,3 +456,22 @@ function closeTipModal(event) {
     if (event && event.target !== event.currentTarget) return;
     document.getElementById('tipModal').classList.remove('active');
 }
+
+// ===== 深浅模式切换 =====
+function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('vidpic-theme', next);
+}
+
+// 初始化主题
+(function initTheme() {
+    const saved = localStorage.getItem('vidpic-theme');
+    if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+})();
