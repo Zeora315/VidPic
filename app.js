@@ -149,7 +149,7 @@ async function startExtraction() {
     isExtracting = false;
     document.getElementById('progressBar').classList.add('complete');
     document.getElementById('progressBar').textContent = '完成';
-    showToast(`成功提取 ${frames.length} 帧`);
+    showToast(`成功提取 ${frames.length} 帧！`);
     showPreview();
 }
 
@@ -403,44 +403,8 @@ function renderSheetToBlob(sheet, pageIndex) {
     });
 }
 
-async function downloadFramesZIP() {
-    if (frames.length === 0) {
-        showToast('没有可下载的帧');
-        return;
-    }
-    showToast('正在打包帧ZIP...');
-    const zip = new JSZip();
-    const folder = zip.folder('视频拆图VidPic-帧');
-    const promises = frames.map((frame, index) => {
-        return fetch(frame)
-            .then(res => res.blob())
-            .then(blob => {
-                folder.file(`帧${index + 1}.png`, blob);
-            });
-    });
-    await Promise.all(promises);
-    const content = await zip.generateAsync({type: 'blob'});
-    saveAs(content, '视频拆图VidPic-帧.zip');
-    showToast('帧ZIP下载完成！');
-}
-
-async function downloadFramesBatch() {
-    if (frames.length === 0) {
-        showToast('没有可下载的帧');
-        return;
-    }
-    showToast('正在批量下载帧...');
-    for (let i = 0; i < frames.length; i++) {
-        saveAs(frames[i], `帧${i + 1}.png`);
-        if (i < frames.length - 1) {
-            await new Promise(r => setTimeout(r, 400));
-        }
-    }
-    showToast('批量下载帧完成！');
-}
-
 async function downloadPDF() {
-    showToast('正在打包ZIP...');
+    showToast('正在打包排版页ZIP...');
     const zip = new JSZip();
     const folder = zip.folder('视频拆图VidPic');
     const sheets = document.querySelectorAll('.a4-sheet');
@@ -451,21 +415,69 @@ async function downloadPDF() {
     });
     await Promise.all(promises);
     const content = await zip.generateAsync({type: 'blob'});
-    saveAs(content, '视频拆图VidPic.zip');
-    showToast('ZIP下载完成！');
+    saveAs(content, '视频拆图VidPic_排版页.zip');
+    showToast('排版页ZIP下载完成！');
 }
 
-async function downloadPages() {
-    showToast('正在批量下载图片...');
-    const sheets = document.querySelectorAll('.a4-sheet');
-    for (let i = 0; i < sheets.length; i++) {
-        const blob = await renderSheetToBlob(sheets[i], i);
-        saveAs(blob, `第${i + 1}页.png`);
-        if (i < sheets.length - 1) {
-            await new Promise(r => setTimeout(r, 400));
-        }
+async function downloadAllFramesZip() {
+    if (frames.length === 0) {
+        showToast('没有可下载的帧');
+        return;
     }
-    showToast('批量下载完成！');
+    showToast(`正在打包 ${frames.length} 帧...`);
+    const zip = new JSZip();
+    const folder = zip.folder('视频拆图VidPic_帧');
+    const promises = frames.map((frame, index) => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                const c = document.createElement('canvas');
+                c.width = img.naturalWidth;
+                c.height = img.naturalHeight;
+                c.getContext('2d').drawImage(img, 0, 0);
+                c.toBlob((blob) => {
+                    folder.file(`frame_${String(index + 1).padStart(4, '0')}.png`, blob);
+                    resolve();
+                }, 'image/png');
+            };
+            img.src = frame;
+        });
+    });
+    await Promise.all(promises);
+    const content = await zip.generateAsync({type: 'blob'});
+    saveAs(content, '视频拆图VidPic_所有帧.zip');
+    showToast(`已打包 ${frames.length} 帧！`);
+}
+
+async function downloadSelectedFrames() {
+    if (selectedFrames.size === 0) {
+        showToast('请先选择要下载的帧');
+        return;
+    }
+    const indices = Array.from(selectedFrames).sort((a, b) => a - b);
+    showToast(`正在打包 ${indices.length} 帧...`);
+    const zip = new JSZip();
+    const folder = zip.folder('视频拆图VidPic_选中帧');
+    const promises = indices.map((index) => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+                const c = document.createElement('canvas');
+                c.width = img.naturalWidth;
+                c.height = img.naturalHeight;
+                c.getContext('2d').drawImage(img, 0, 0);
+                c.toBlob((blob) => {
+                    folder.file(`frame_${String(index + 1).padStart(4, '0')}.png`, blob);
+                    resolve();
+                }, 'image/png');
+            };
+            img.src = frames[index];
+        });
+    });
+    await Promise.all(promises);
+    const content = await zip.generateAsync({type: 'blob'});
+    saveAs(content, '视频拆图VidPic_选中帧.zip');
+    showToast(`已打包 ${indices.length} 帧！`);
 }
 
 function resetAll() {
