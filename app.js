@@ -149,7 +149,7 @@ async function startExtraction() {
     isExtracting = false;
     document.getElementById('progressBar').classList.add('complete');
     document.getElementById('progressBar').textContent = '完成';
-    showToast(`成功提取 ${frames.length} 帧！`);
+    showToast(`成功提取 ${frames.length} 帧`);
     showPreview();
 }
 
