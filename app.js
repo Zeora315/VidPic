@@ -206,11 +206,15 @@ function deleteSelected() {
         showToast('请先选择要删除的帧');
         return;
     }
+    document.getElementById('deleteConfirmText').textContent =
+        `确定要删除选中的 ${selectedFrames.size} 帧吗？此操作不可撤销。`;
+    document.getElementById('deleteConfirmModal').classList.add('active');
+}
 
-    const newFrames = [];
+function confirmDelete() {
     const selectedArray = Array.from(selectedFrames).sort((a, b) => b - a);
+    const newFrames = [];
 
-    // 创建新的帧数组，排除选中的
     frames.forEach((frame, i) => {
         if (!selectedFrames.has(i)) {
             newFrames.push(frame);
@@ -219,8 +223,14 @@ function deleteSelected() {
 
     frames = newFrames;
     selectedFrames.clear();
+    closeDeleteConfirm();
     showPreview();
     showToast(`已删除 ${selectedArray.length} 帧，剩余 ${frames.length} 帧`);
+}
+
+function closeDeleteConfirm(event) {
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById('deleteConfirmModal').classList.remove('active');
 }
 
 function updateSelectedCount() {
@@ -456,3 +466,22 @@ function closeTipModal(event) {
     if (event && event.target !== event.currentTarget) return;
     document.getElementById('tipModal').classList.remove('active');
 }
+
+// ===== 深浅模式切换 =====
+function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('vidpic-theme', next);
+}
+
+// 初始化主题
+(function initTheme() {
+    const saved = localStorage.getItem('vidpic-theme');
+    if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+})();
