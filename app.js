@@ -155,6 +155,7 @@ async function startExtraction() {
 
 function showPreview() {
     document.getElementById('previewSection').classList.add('active');
+    document.getElementById('frameDownloadActions').style.display = 'flex';
     const grid = document.getElementById('frameGrid');
     grid.innerHTML = '';
 
@@ -403,6 +404,53 @@ function renderSheetToBlob(sheet, pageIndex) {
     });
 }
 
+// ===== 帧下载 =====
+async function downloadFramesZip() {
+    if (frames.length === 0) { showToast('没有可下载的帧'); return; }
+    showToast('正在打包ZIP...');
+    const zip = new JSZip();
+    const folder = zip.folder('视频拆图VidPic');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    for (let i = 0; i < frames.length; i++) {
+        const img = new Image();
+        img.src = frames[i];
+        await new Promise(resolve => { img.onload = resolve; });
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        ctx.drawImage(img, 0, 0);
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        folder.file(`帧_${String(i + 1).padStart(3, '0')}.png`, blob);
+    }
+    const content = await zip.generateAsync({type: 'blob'});
+    saveAs(content, '视频拆图VidPic_帧.zip');
+    showToast('ZIP下载完成！');
+}
+
+async function downloadFramesBatch() {
+    if (frames.length === 0) { showToast('没有可下载的帧'); return; }
+    showToast('正在批量下载...');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    for (let i = 0; i < frames.length; i++) {
+        const img = new Image();
+        img.src = frames[i];
+        await new Promise(resolve => { img.onload = resolve; });
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        ctx.drawImage(img, 0, 0);
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        saveAs(blob, `帧_${String(i + 1).padStart(3, '0')}.png`);
+        if (i < frames.length - 1) {
+            await new Promise(r => setTimeout(r, 400));
+        }
+    }
+    showToast('批量下载完成！');
+}
+
+// ===== 打印页面下载 =====
 async function downloadPDF() {
     showToast('正在打包ZIP...');
     const zip = new JSZip();
