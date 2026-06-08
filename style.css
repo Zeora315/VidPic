@@ -795,26 +795,6 @@ input[type="file"] { display: none; }
     justify-content: center;
 }
 
-.modal-sm { max-width: 340px; }
-
-.modal-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-}
-
-.modal-actions .btn { min-width: 80px; justify-content: center; }
-
-.btn-danger {
-    background: var(--c-danger);
-    color: white;
-    border: none;
-}
-
-.btn-danger:hover {
-    filter: brightness(0.9);
-}
-
 /* ===== Toast ===== */
 .toast {
     position: fixed;
